@@ -13,8 +13,10 @@ class CreateTodoTable extends Migration
      */
     public function up()
     {
-        Schema::table('todos', function (Blueprint $table) {
-            //
+        Schema::create('todos', function (Blueprint $table) {
+            $table->id();
+            $table->string('title');
+            $table->integer('done')->default(0);
         });
     }
 
@@ -25,8 +27,7 @@ class CreateTodoTable extends Migration
      */
     public function down()
     {
-        Schema::table('todos', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('todos');
+
     }
 }
