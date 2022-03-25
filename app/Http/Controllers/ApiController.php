@@ -11,7 +11,7 @@ class ApiController extends Controller
         $array = ['error' => ''];
 
         $rules = [
-            'title' => 'required,min:3'
+            'title' => 'required|min:3'
         ];
         $validator = Validator::make($request->all(), $rules);
 
@@ -21,6 +21,10 @@ class ApiController extends Controller
         }
 
         $title = $request->input('title');
+
+        $todo = new Todo(); //Criando uma nova instancio do model
+        $todo->title = $title; //Preenchendo com o titolo
+        $todo->save();  //Salvando o registro
 
         return $array;
     }
