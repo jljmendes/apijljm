@@ -47,13 +47,46 @@ class ApiController extends Controller
         if($todo){
             $array['todo'] = $todo;
         }else{
-            $array['error'] = 'Atarefa '.$id.' não existe';
+            $array['error'] = 'A tarefa '.$id.' não existe';
         }
         return $array;
     }
 
-    public function updateTodo() {
+    public function updateTodo($id, Request $request) {
+        $array = ['error' => ''];
 
+        //Validando
+        $rules = [
+            'title' => 'min:3',
+            'done' => 'boolean'
+        ];
+        $validator = Validator::make($request->all(), $rules);
+
+        if($validator->fails()){
+            $array['error'] = $validator->errors();
+            return $array;
+        }
+
+        $title = $request->input('title');
+        $done = $request->input('done');
+
+        //Atualizar o item
+        $todo = Todo::find($id);
+        if($todo){
+
+            if($title){
+                $todo->title = $title;
+            }
+            if($done !== NULL){
+                $todo->done = $done;
+            }
+
+            $todo->save();
+        }else{
+            $array['error'] = 'Tarefa '.$id.' não existe, logo não pode ser atualizado.';
+
+
+        return $array;
     }
 
     public function deleteTodo() {
